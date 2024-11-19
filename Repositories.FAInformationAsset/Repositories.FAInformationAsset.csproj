@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DDO.FAInformationAsset\DDO.FAInformationAsset.csproj" />
+    <ProjectReference Include="..\RepositoryContracts.FAInformationAsset\RepositoryContracts.FAInformationAsset.csproj" />
+    <ProjectReference Include="..\TNA.RepositoryLibraries.MongoDB\TNA.RepositoryLibraries.MongoDB.csproj" />
+  </ItemGroup>
+
+</Project>

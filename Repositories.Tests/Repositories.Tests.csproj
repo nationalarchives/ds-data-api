@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.6.3" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.6.3" />
+    <PackageReference Include="NSubstitute" Version="5.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DDO.PreparedFile\DDO.PreparedFile.csproj" />
+    <ProjectReference Include="..\DDO.ReplicaEditSet\DDO.ReplicaEditSet.csproj" />
+    <ProjectReference Include="..\DDO.Replica\DDO.Replica.csproj" />
+    <ProjectReference Include="..\Repositories.PreparedFile\Repositories.PreparedFile.csproj" />
+    <ProjectReference Include="..\Repositories.ReplicaEditSet\Repositories.ReplicaEditSet.csproj" />
+    <ProjectReference Include="..\Repositories.Replica\Repositories.Replica.csproj" />
+    <ProjectReference Include="..\RepositoryContracts.PreparedFile\RepositoryContracts.PreparedFile.csproj" />
+    <ProjectReference Include="..\RepositoryContracts.ReplicaEditSet\RepositoryContracts.ReplicaEditSet.csproj" />
+    <ProjectReference Include="..\RepositoryContracts.Replica\RepositoryContracts.Replica.csproj" />
+  </ItemGroup>
+
+</Project>

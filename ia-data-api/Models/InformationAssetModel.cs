@@ -1,0 +1,60 @@
+﻿namespace ia_data_api.Models;
+
+public class InformationAssetModel
+{
+    public string Iaid { get; set; }
+    public string ReplicaId { get; set; }
+    public string CitableReference { get; set; }
+    public string ParentId { get; set; }
+    public string AccumulationDates { get; set; }
+    public string Accruals { get; set; }
+    public string AccessConditions { get; set; }
+    public string AdministrativeBackground { get; set; }
+    public string AppraisalInformation { get; set; }
+    public string Arrangement { get; set; }
+    public string BatchId { get; set; }
+    public string RefIaid { get; set; }
+    public int CatalogueId { get; set; }
+    public int CatalogueLevel { get; set; }
+    public int CoveringFromDate { get; set; }
+    public int CoveringToDate { get; set; }
+    public string CoveringDates { get; set; }
+    public string CustodialHistory { get; set; }
+    public string ClosureCode { get; set; }
+    public string ClosureStatus { get; set; }
+    public string ClosureType { get; set; }
+    public string RecordOpeningDate { get; set; }
+    public List<EntityReferenceModel> CorporateNames { get; set; }
+    public List<EntityReferenceModel> CopiesInformation { get; set; }
+    public List<EntityReferenceModel> CreatorName { get; set; }
+    public bool Digitised { get; set; }
+    public string Dimensions { get; set; }
+    public string FormerReferenceDep { get; set; }
+    public string FormerReferencePro { get; set; }
+    public List<EntityReferenceModel> HeldBy { get; set; }
+    public List<EntityReferenceModel> ImmediateSourceOfAcquisition { get; set; }
+    public string Language { get; set; }
+    public string LegalStatus { get; set; }
+    public List<EntityReferenceModel> Links { get; set; }
+    public List<EntityReferenceModel> LocationOfOriginals { get; set; }
+    public string MapDesignation { get; set; }
+    public int MapScaleNumber { get; set; }
+    public string Note { get; set; }
+    public List<PersonModel> People { get; set; }
+    public string PhysicalCondition { get; set; }
+    public string PhysicalDescriptionExtent { get; set; }
+    public string PhysicalDescriptionForm { get; set; }
+    public List<PlaceModel> Places { get; set; }
+    public string ReferencePart { get; set; }
+    public List<string> PublicationNote { get; set; }
+    public List<EntityReferenceModel> RelatedMaterial { get; set; }
+    public List<EntityReferenceModel> SeparatedMaterial { get; set; }
+    public List<RegistryRecordsModel> RegistryRecords { get; set; }
+    public string RestrictionsOnUse { get; set; }
+    public ScopeContentModel ScopeContent { get; set; }
+    public string SortKey { get; set; }
+    public string Source { get; set; }
+    public List<string> Subjects { get; set; }
+    public string Title { get; set; }
+    public List<string> UnpublishedFindingAids { get; set; }
+}
