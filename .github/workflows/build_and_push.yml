@@ -1,0 +1,102 @@
+name: Build and push Discovery data api
+
+permissions:
+      id-token: write
+      contents: write 
+
+on:
+  workflow_dispatch:
+    inputs:
+      create_iadata_api:
+        description: 'IA data api'
+        required: false 
+        type: boolean
+      create_metadata_api:
+        description: 'Meta data api'
+        required: false 
+        type: boolean
+      create_sardata_api:
+        description: 'Sar data api'
+        required: false 
+        type: boolean        
+      iadata_api-version-tag:
+        description: 'IA data api version tag'     
+        required: true
+        default: 'latest'
+      metadata_api-version-tag:
+        description: 'Meta data api version tag'
+        required: true
+        default: 'latest'
+      sardata_api-version-tag:
+        description: 'Sar data api version tag'
+        required: true
+        default: 'latest'        
+
+jobs:
+  Docker:
+    name: Build and push Discovery data api Docker Images
+    runs-on: ubuntu-latest
+    
+    environment: inter-site 
+    env:
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}    
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+        fetch-depth: 0
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ env.AWS_ROLE_ARN }}
+        aws-region: eu-west-2
+        role-session-name: Data_API_GitAction
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+
+    - name: Build, tag, and push the IA data api to ECR
+      if: ${{ github.event.inputs.create_iadata_api == 'true' }}
+      id: build-push-ia-data-api
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ia-data-api
+        IMAGE_TAG: ${{ github.event.inputs.iadata_api-version-tag }}
+      run: |
+        # Build the IA data api docker container and push it to ECR 
+        docker build -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} -f Dockerfile-iadata .
+        echo "Pushing image to ECR..."
+        docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+        echo "::set-output name=image::${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}" >> $GITHUB_OUTPUT
+        
+    - name: Build, tag, and push the Meta data api to ECR
+      if: ${{ github.event.inputs.create_metadata_api == 'true' }}
+      id: build-push-meta-data-api
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: meta-data-api
+        IMAGE_TAG: ${{ github.event.inputs.metadata_api-version-tag }}
+      run: |
+        # Build the Meta data api docker container and push it to ECR 
+        docker build -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} -f Dockerfile-metadata .
+        echo "Pushing image to ECR..."
+        docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+        echo "::set-output name=image::${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}" >> $GITHUB_OUTPUT    
+
+    - name: Build, tag, and push the Sar data api to ECR
+      if: ${{ github.event.inputs.create_sardata_api == 'true' }}
+      id: build-push-sar-data-api
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: sar-data-api
+        IMAGE_TAG: ${{ github.event.inputs.sardata_api-version-tag }}
+      run: |
+        # Build the Sar data api docker container and push it to ECR 
+        docker build -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} -f Dockerfile-sardata .
+        echo "Pushing image to ECR..."
+        docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+        echo "::set-output name=image::${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}" >> $GITHUB_OUTPUT           
