@@ -3,6 +3,5 @@
     public class ClosureCriterionModel
     {
         public string ExemptionCodeId { get; set; }
-        public string ExemptionCodeDescription { get; set; }
     }
 }

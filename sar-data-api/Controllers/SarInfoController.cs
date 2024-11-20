@@ -13,12 +13,14 @@ namespace sar_data_api.Controllers
         private readonly IMapper _mapper;
         private ILogger<SarInfoController> _logger;
         private ISarContext _dataContext;
+        private IClosureCriterionsContext _closureContext;
 
-        public SarInfoController(IMapper mapper, ILogger<SarInfoController> logger, ISarContext sarContext)
+        public SarInfoController(IMapper mapper, ILogger<SarInfoController> logger, ISarContext sarContext, IClosureCriterionsContext closureCriterionsContext)
         {
             _mapper = mapper;
             _logger = logger;
             _dataContext = sarContext;
+            _closureContext = closureCriterionsContext;
         }
 
         [HttpGet("{iaid}", Name = "getsar")]
@@ -29,7 +31,10 @@ namespace sar_data_api.Controllers
             if (string.IsNullOrEmpty(iaid)) return BadRequest("Iaid is required.");
             var record = await _dataContext.GetAsync(iaid);
             if (record == null) return NotFound();
-            return Ok(_mapper.Map<SarInfoModel>(record));
+            var result = _mapper.Map<SarInfoDisplayModel>(record);
+            var closureCriterions = _closureContext.GetAll();
+            result.ClosureCriterions.ForEach(x => { x.ExemptionCodeDescription = closureCriterions?.FirstOrDefault(y => y.Code == x.ExemptionCodeId)?.Description; });
+            return Ok(result);
         }
 
         [HttpPost]
@@ -40,7 +45,7 @@ namespace sar_data_api.Controllers
             if (string.IsNullOrEmpty(model.Iaid)) return BadRequest("Iaid is required.");
             var record = _mapper.Map<Sar>(model);
             await _dataContext.UpsertAsync(record);
-            return CreatedAtRoute("getsar", new { iaid = model.Iaid }, model);
+            return CreatedAtRoute("getsar", new { iaid = model.Iaid });
         }
 
         [HttpDelete("{iaid}")]

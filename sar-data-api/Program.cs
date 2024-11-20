@@ -22,6 +22,8 @@ try
 
     builder.Services.AddTransient<IRepository<Sar>, Repository<Sar>>();
     builder.Services.AddTransient<ISarContext, SarContext>();
+    builder.Services.AddTransient<IRepository<ClosureCriterions>, Repository<ClosureCriterions>>();
+    builder.Services.AddTransient<IClosureCriterionsContext, ClosureCriterionsContext>();
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Sar data api", Version = "v1" }); });
