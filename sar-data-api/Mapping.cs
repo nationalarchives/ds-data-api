@@ -29,5 +29,9 @@ public class Mapping : Profile
              .ForMember(dest => dest.ReconsiderDueInDate, opt => opt.MapFrom(src => src.ReconsiderDueInDate))
              .ForMember(dest => dest.Explanation, opt => opt.MapFrom(src => src.Explanation))
              .ForMember(dest => dest.ProcatTitle, opt => opt.MapFrom(src => src.ProcatTitle)).ReverseMap();
+
+        CreateMap<ClosureCriterionDisplayModel, ClosureCriterions>()
+             .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.ExemptionCodeId))
+             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.ExemptionCodeDescription)).ReverseMap();
     }
 }

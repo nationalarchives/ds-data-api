@@ -5,6 +5,6 @@ namespace RepositoryContracts.SarInfo
 {
     public interface IClosureCriterionsContext
     {
-        IEnumerable<ClosureCriterions> GetAll();
+        List<ClosureCriterions> GetAll();
     }
 }

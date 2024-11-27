@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts.SarInfo;
+using sar_data_api.Helper;
 using sar_data_api.Models;
 using TNA.DataDefinitionObjects;
 
@@ -32,8 +33,8 @@ namespace sar_data_api.Controllers
             var record = await _dataContext.GetAsync(iaid);
             if (record == null) return NotFound();
             var result = _mapper.Map<SarInfoDisplayModel>(record);
-            var closureCriterions = _closureContext.GetAll();
-            result.ClosureCriterions.ForEach(x => { x.ExemptionCodeDescription = closureCriterions?.FirstOrDefault(y => y.Code == x.ExemptionCodeId)?.Description; });
+            var closureCriterions = _mapper.Map<List<ClosureCriterionDisplayModel>>(_closureContext.GetAll());
+            result = result.MapClosureCriterionDescription(closureCriterions);
             return Ok(result);
         }
 

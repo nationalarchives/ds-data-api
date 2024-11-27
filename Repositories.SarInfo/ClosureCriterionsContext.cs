@@ -1,5 +1,6 @@
 ﻿using RepositoryContracts.SarInfo;
 using System.Collections.Generic;
+using System.Linq;
 using TNA.DataDefinitionObjects;
 using TNA.RepositoryLibraries.MongoDB;
 
@@ -13,9 +14,9 @@ namespace Repositories.SarInfo
         {
             _repository = repository;
         }
-        public IEnumerable<ClosureCriterions> GetAll()
+        public List<ClosureCriterions> GetAll()
         {
-            return _repository.FindAll();
+            return _repository.FindAll().ToList();
         }
     }
 }
