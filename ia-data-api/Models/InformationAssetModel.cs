@@ -18,6 +18,8 @@ public class InformationAssetModel
     public int CatalogueLevel { get; set; }
     public int CoveringFromDate { get; set; }
     public int CoveringToDate { get; set; }
+    public int ChargeType { get; set; }
+    public string EDocumentId { get; set; }
     public string CoveringDates { get; set; }
     public string CustodialHistory { get; set; }
     public string ClosureCode { get; set; }
