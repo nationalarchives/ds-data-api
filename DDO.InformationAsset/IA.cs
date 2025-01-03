@@ -73,7 +73,7 @@ namespace TNA.DataDefinitionObjects
         /// <summary>
         /// Charge Type
         /// </summary>
-        public int ChgTy { get; set; }
+        public int ChgType { get; set; }
 
         /// <summary>
         /// Covering From Date
@@ -392,7 +392,7 @@ namespace TNA.DataDefinitionObjects
         /// <summary>
         /// Catalogue Id
         /// </summary>
-        public bool ShouldSerializeChgTy() { return ChgTy != default(int); }
+        public bool ShouldSerializeChgType() { return ChgType != default(int); }
 
         /// <summary>
         /// Batch Id
