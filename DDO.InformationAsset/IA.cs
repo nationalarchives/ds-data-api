@@ -390,12 +390,12 @@ namespace TNA.DataDefinitionObjects
         public bool ShouldSerializeCatId() { return CatId != default(int); }
 
         /// <summary>
-        /// Catalogue Id
+        /// Charge Type
         /// </summary>
         public bool ShouldSerializeChgType() { return ChgType != default(int); }
 
         /// <summary>
-        /// Batch Id
+        /// EDocument Id
         /// </summary>
         public bool ShouldSerializeEDocId() { return !string.IsNullOrWhiteSpace(EDocId); }
 
