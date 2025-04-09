@@ -98,6 +98,8 @@ namespace ia_data_api
                 .ForMember(dest => dest.BatchId, opt => opt.MapFrom(src => src.BatchId))
                 .ForMember(dest => dest.BRefIAID, opt => opt.MapFrom(src => src.RefIaid))
                 .ForMember(dest => dest.CatId, opt => opt.MapFrom(src => src.CatalogueId))
+                .ForMember(dest => dest.EDocId, opt => opt.MapFrom(src => src.EDocumentId))
+                .ForMember(dest => dest.ChgType, opt => opt.MapFrom(src => src.ChargeType))
                 .ForMember(dest => dest.CFrmDt, opt => opt.MapFrom(src => src.CoveringFromDate))
                 .ForMember(dest => dest.CorpNs, opt => opt.MapFrom(src => src.CorporateNames))
                 .ForMember(dest => dest.CovDts, opt => opt.MapFrom(src => src.CoveringDates))

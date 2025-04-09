@@ -66,6 +66,16 @@ namespace TNA.DataDefinitionObjects
         public int CatId { get; set; }
 
         /// <summary>
+        /// E-Document Id
+        /// </summary>
+        public string EDocId { get; set; }
+
+        /// <summary>
+        /// Charge Type
+        /// </summary>
+        public int ChgType { get; set; }
+
+        /// <summary>
         /// Covering From Date
         /// </summary>
         public int CFrmDt { get; set; }
@@ -378,6 +388,16 @@ namespace TNA.DataDefinitionObjects
         /// Catalogue Id
         /// </summary>
         public bool ShouldSerializeCatId() { return CatId != default(int); }
+
+        /// <summary>
+        /// Charge Type
+        /// </summary>
+        public bool ShouldSerializeChgType() { return ChgType != default(int); }
+
+        /// <summary>
+        /// EDocument Id
+        /// </summary>
+        public bool ShouldSerializeEDocId() { return !string.IsNullOrWhiteSpace(EDocId); }
 
         /// <summary>
         /// Covering From Date
