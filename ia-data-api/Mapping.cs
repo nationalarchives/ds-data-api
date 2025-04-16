@@ -129,6 +129,7 @@ namespace ia_data_api
                 .ForMember(dest => dest.Places, opt => opt.MapFrom(src => src.Places))
                 .ForMember(dest => dest.PRef, opt => opt.MapFrom(src => src.ReferencePart))
                 .ForMember(dest => dest.PublNotes, opt => opt.MapFrom(src => src.PublicationNote))
+                .ForMember(dest => dest.RRec, opt => opt.MapFrom(src => src.RegistryRecords))
                 .ForMember(dest => dest.RelMats, opt => opt.MapFrom(src => src.RelatedMaterial))
                 .ForMember(dest => dest.SepMats, opt => opt.MapFrom(src => src.SeparatedMaterial))
                 .ForMember(dest => dest.RstrOnUse, opt => opt.MapFrom(src => src.RestrictionsOnUse))
