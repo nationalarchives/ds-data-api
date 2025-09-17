@@ -3,12 +3,6 @@
 public class ReplicaModel
 {
     public List<DigitalFileModel> Files { get; set; }
-
-    /// <summary>
-    /// MongoDB _id field value
-    /// </summary>
-    public string Id { get; set; }
-
     /// <summary>
     /// Replica ID
     /// </summary>
