@@ -1,5 +1,5 @@
 using meta_data_api.Helper;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using NLog;
 using NLog.Web;
 using Repositories.PreparedFile;

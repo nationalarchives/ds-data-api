@@ -1,4 +1,4 @@
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using NLog.Web;
 using NLog;
 using Repositories.FAInformationAsset;
