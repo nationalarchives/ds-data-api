@@ -26,8 +26,6 @@ try
     builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "IA data api", Version = "v1" }); });
     builder.Services.AddHealthChecks();
 
-    builder.Services.AddAutoMapper(typeof(Program).Assembly);
-
     builder.Services.AddTransient<IRepository<IA>, Repository<IA>>();
     builder.Services.AddTransient<IRepository<FileAuthorityIA>, Repository<FileAuthorityIA>>();
     builder.Services.AddTransient<IInformationAssetContext, InformationAssetContext>();
