@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using meta_data_api.Models;
+﻿using meta_data_api.Models;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts.ReplicaEditSet;
-using TNA.DataDefinitionObjects;
 
 namespace meta_data_api.Controllers;
 
@@ -11,13 +9,11 @@ namespace meta_data_api.Controllers;
 public class ReplicaEditSetController : Controller
 {
     private IReplicaEditSetContext _dataContext;
-    private readonly IMapper _mapper;
     private ILogger<ReplicaEditSetController> _logger;
 
-    public ReplicaEditSetController(IReplicaEditSetContext dataContext, IMapper mapper, ILogger<ReplicaEditSetController> logger)
+    public ReplicaEditSetController(IReplicaEditSetContext dataContext, ILogger<ReplicaEditSetController> logger)
     {
         _dataContext = dataContext;
-        _mapper = mapper;
         _logger = logger;
     }
 
@@ -29,7 +25,7 @@ public class ReplicaEditSetController : Controller
         if (string.IsNullOrEmpty(iaid)) return BadRequest("Iaid is required.");
         var replicaEditSet = await _dataContext.GetAsync(iaid);
         if (replicaEditSet == null) return NotFound();
-        return Ok(_mapper.Map<ReplicaEditSetModel>(replicaEditSet));
+        return Ok(replicaEditSet.ToReplicaEditSetModel());
     }
 
     [HttpPost]
@@ -39,7 +35,7 @@ public class ReplicaEditSetController : Controller
     {
         if (model == null) return BadRequest("ReplicaEditSet object is NULL.");
         if (string.IsNullOrEmpty(model.IAID)) return BadRequest("Iaid is required.");
-        var replicaEditSet = _mapper.Map<ReplEditSet>(model);
+        var replicaEditSet = model.ToReplEditSet();
         return await _dataContext.UpsertAsync(replicaEditSet) ? (IActionResult)NoContent() : BadRequest();
     }
 
@@ -69,6 +65,7 @@ public class ReplicaEditSetController : Controller
         if (pageSize < 1 || pageNumber < 1) return BadRequest("Page size and/or number should be grater than 0.");
         var replicaEditSet = await _dataContext.GetAsync(pageSize, pageNumber);
         if (replicaEditSet == null) return NotFound();
-        return Ok(_mapper.Map<IEnumerable<ReplicaEditSetModel>>(replicaEditSet));
+        var result = replicaEditSet.Select(x => x.ToReplicaEditSetModel()).ToList();
+        return Ok(result);
     }
 }

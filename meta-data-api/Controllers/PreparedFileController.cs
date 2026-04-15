@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using meta_data_api.Models;
+﻿using meta_data_api.Models;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts.PreparedFile;
-using TNA.DataDefinitionObjects;
 
 namespace meta_data_api.Controllers;
 
@@ -11,13 +9,11 @@ namespace meta_data_api.Controllers;
 public class PreparedFileController : Controller
 {
     private IPreparedFileContext _dataContext;
-    private readonly IMapper _mapper;
     private ILogger<PreparedFileController> _logger;
 
-    public PreparedFileController(IPreparedFileContext dataContext, IMapper mapper, ILogger<PreparedFileController> logger)
+    public PreparedFileController(IPreparedFileContext dataContext, ILogger<PreparedFileController> logger)
     {
         _dataContext = dataContext;
-        _mapper = mapper;
         _logger = logger;
     }
 
@@ -29,7 +25,7 @@ public class PreparedFileController : Controller
         if (string.IsNullOrEmpty(iaid)) return BadRequest("Iaid is required.");
         var prepFile = await _dataContext.GetAsync(iaid);
         if (prepFile == null) return NotFound();
-        return Ok(_mapper.Map<PreparedFileModel>(prepFile));
+        return Ok(prepFile.ToPreparedFileModel());
     }
 
     [HttpPost]
@@ -38,7 +34,7 @@ public class PreparedFileController : Controller
     {
         if (model == null) return BadRequest("PreparedFile object is NULL.");
         if (string.IsNullOrEmpty(model.IAID)) return BadRequest("Iaid is required.");
-        var prepFile = _mapper.Map<PrepFile>(model);
+        var prepFile = model.ToPrepFile();
         await _dataContext.UpsertAsync(prepFile);
         return CreatedAtRoute("getpreparedfile", new { iaid = model.IAID }, model);
     }
