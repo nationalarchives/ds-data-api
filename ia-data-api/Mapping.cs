@@ -1,222 +1,593 @@
-﻿using AutoMapper;
-using ia_data_api.Models;
+﻿using ia_data_api.Models;
 using TNA.DataDefinitionObjects;
 
 namespace ia_data_api
 {
-    public class Mapping : Profile
+    public static class Mapping
     {
-        public Mapping()
+        public static XRef ToXRef(this XReferenceModel src)
         {
-            CreateMap<XReferenceModel, XRef>()
-                    .ForMember(dest => dest.XRefId, opt => opt.MapFrom(src => src.XReferenceId))
-                    .ForMember(dest => dest.XRefC, opt => opt.MapFrom(src => src.XReferenceCode))
-                    .ForMember(dest => dest.XRefN, opt => opt.MapFrom(src => src.XReferenceName))
-                    .ForMember(dest => dest.XRefT, opt => opt.MapFrom(src => src.XReferenceType))
-                    .ForMember(dest => dest.XRefURL, opt => opt.MapFrom(src => src.XReferenceURL))
-                    .ForMember(dest => dest.XRefD, opt => opt.MapFrom(src => src.XReferenceDescription))
-                    .ForMember(dest => dest.XRefSrt, opt => opt.MapFrom(src => src.XReferenceSortWord)).ReverseMap();
+            if (src == null) return null;
 
-            CreateMap<EntityReferenceModel, EntRef>()
-                    .IncludeBase<XReferenceModel, XRef>()
-                    .ForMember(dest => dest.Desc, opt => opt.MapFrom(src => src.Description))
-                    .ForMember(dest => dest.PreTtl, opt => opt.MapFrom(src => src.PreTitle))
-                    .ForMember(dest => dest.PTtl, opt => opt.MapFrom(src => src.Title))
-                    .ForMember(dest => dest.FN, opt => opt.MapFrom(src => src.FirstName))
-                    .ForMember(dest => dest.SN, opt => opt.MapFrom(src => src.Surname))
-                    .ForMember(dest => dest.SDate, opt => opt.MapFrom(src => src.StartDate))
-                    .ForMember(dest => dest.EDate, opt => opt.MapFrom(src => src.EndDate)).ReverseMap();
+            return new XRef
+            {
+                XRefId = src.XReferenceId,
+                XRefC = src.XReferenceCode,
+                XRefN = src.XReferenceName,
+                XRefT = src.XReferenceType,
+                XRefURL = src.XReferenceURL,
+                XRefD = src.XReferenceDescription,
+                XRefSrt = src.XReferenceSortWord
+            };
+        }
 
-            CreateMap<PlaceModel, Place>()
-                    .ForMember(dest => dest.Desc, opt => opt.MapFrom(src => src.Description))
-                    .ForMember(dest => dest.DispName, opt => opt.MapFrom(src => src.DisplayName))
-                    .ForMember(dest => dest.PlN, opt => opt.MapFrom(src => src.PlaceName))
-                    .ForMember(dest => dest.Par, opt => opt.MapFrom(src => src.Parish))
-                    .ForMember(dest => dest.TwnID, opt => opt.MapFrom(src => src.TownID))
-                    .ForMember(dest => dest.Twn, opt => opt.MapFrom(src => src.Town))
-                    .ForMember(dest => dest.Cnty, opt => opt.MapFrom(src => src.County))
-                    .ForMember(dest => dest.CntyID, opt => opt.MapFrom(src => src.CountyID))
-                    .ForMember(dest => dest.OldCnty, opt => opt.MapFrom(src => src.OldCounty))
-                    .ForMember(dest => dest.OldCntyID, opt => opt.MapFrom(src => src.OldCountyID))
-                    .ForMember(dest => dest.NewCnty, opt => opt.MapFrom(src => src.NewCounty))
-                    .ForMember(dest => dest.NewCntyID, opt => opt.MapFrom(src => src.NewCountyID))
-                    .ForMember(dest => dest.CtryID, opt => opt.MapFrom(src => src.CountryID))
-                    .ForMember(dest => dest.Ctry, opt => opt.MapFrom(src => src.Country))
-                    .ForMember(dest => dest.Reg, opt => opt.MapFrom(src => src.Region))
-                    .ForMember(dest => dest.RegID, opt => opt.MapFrom(src => src.RegionID))
-                    .ForMember(dest => dest.StDt, opt => opt.MapFrom(src => src.StartDate))
-                    .ForMember(dest => dest.EndDt, opt => opt.MapFrom(src => src.EndDate))
-                    .ForMember(dest => dest.Grid, opt => opt.MapFrom(src => src.Grid))
-                    .ForMember(dest => dest.Val, opt => opt.MapFrom(src => src.Validation))
-                    .ForMember(dest => dest.LocType, opt => opt.MapFrom(src => src.LocationType)).ReverseMap();
+        public static XReferenceModel ToXReferenceModel(this XRef src)
+        {
+            if (src == null) return null;
 
-            CreateMap<PersonModel, Prsn>()
-                .ForMember(dest => dest.PreTtl, opt => opt.MapFrom(src => src.PreTitle))
-                .ForMember(dest => dest.PTtl, opt => opt.MapFrom(src => src.Title))
-                .ForMember(dest => dest.SrtTtl, opt => opt.MapFrom(src => src.SortTitle))
-                .ForMember(dest => dest.FN, opt => opt.MapFrom(src => src.Forenames))
-                .ForMember(dest => dest.SN, opt => opt.MapFrom(src => src.Surname))
-                .ForMember(dest => dest.SrtName, opt => opt.MapFrom(src => src.SortName))
-                .ForMember(dest => dest.Epithet, opt => opt.MapFrom(src => src.Epithet))
-                .ForMember(dest => dest.DoB, opt => opt.MapFrom(src => src.DateOfBirth))
-                .ForMember(dest => dest.DoD, opt => opt.MapFrom(src => src.DateOfDeath))
-                .ForMember(dest => dest.Occ, opt => opt.MapFrom(src => src.Occupation))
-                .ReverseMap();
+            return new XReferenceModel
+            {
+                XReferenceId = src.XRefId,
+                XReferenceCode = src.XRefC,
+                XReferenceName = src.XRefN,
+                XReferenceType = src.XRefT,
+                XReferenceURL = src.XRefURL,
+                XReferenceDescription = src.XRefD,
+                XReferenceSortWord = src.XRefSrt
+            };
+        }
 
-            CreateMap<ScopeContentModel, SCont>()
-                    .ForMember(dest => dest.Pple, opt => opt.MapFrom(src => src.PersonNames))
-                    .ForMember(dest => dest.Plcs, opt => opt.MapFrom(src => src.PlaceNames))
-                    .ForMember(dest => dest.RefdToDate, opt => opt.MapFrom(src => src.RefferedToDate))
-                    .ForMember(dest => dest.Orgs, opt => opt.MapFrom(src => src.Organizations))
-                    .ForMember(dest => dest.Desc, opt => opt.MapFrom(src => src.Description))
-                    .ForMember(dest => dest.Eph, opt => opt.MapFrom(src => src.Ephemera))
-                    .ForMember(dest => dest.Schema, opt => opt.MapFrom(src => src.Schema)).ReverseMap();
+        public static EntRef ToEntRef(this EntityReferenceModel src)
+        {
+            if (src == null) return null;
 
-            CreateMap<RegistryRecordsModel, RegRecs>()
-                .ForMember(dest => dest.CURL, opt => opt.MapFrom(src => src.CatalogueURL))
-                .ForMember(dest => dest.ISADGRef, opt => opt.MapFrom(src => src.ISADGReference))
-                .ForMember(dest => dest.NRAD, opt => opt.MapFrom(src => src.NRADetails))
-                .ForMember(dest => dest.NRAID, opt => opt.MapFrom(src => src.NRAID))
-                .ForMember(dest => dest.OthRef, opt => opt.MapFrom(src => src.OtherReference))
-                .ForMember(dest => dest.ROAccNo, opt => opt.MapFrom(src => src.ROAccessionNumber))
-                .ForMember(dest => dest.ROColRef, opt => opt.MapFrom(src => src.ROCollectionReference))
-                .ForMember(dest => dest.SLists, opt => opt.MapFrom(src => src.ScannedLists))
-                .ForMember(dest => dest.SrtW, opt => opt.MapFrom(src => src.SortWord))
-                .ForMember(dest => dest.RRTtl, opt => opt.MapFrom(src => src.RegistryRecordTitle)).ReverseMap();
+            return new EntRef
+            {
+                XRefId = src.XReferenceId,
+                XRefC = src.XReferenceCode,
+                XRefN = src.XReferenceName,
+                XRefT = src.XReferenceType,
+                XRefURL = src.XReferenceURL,
+                XRefD = src.XReferenceDescription,
+                XRefSrt = src.XReferenceSortWord,
+                Desc = src.Description,
+                PreTtl = src.PreTitle,
+                PTtl = src.Title,
+                FN = src.FirstName,
+                SN = src.Surname,
+                SDate = src.StartDate,
+                EDate = src.EndDate
+            };
+        }
 
-            CreateMap<InformationAssetModel, IA>()
-                .ForMember(dest => dest.IAID, opt => opt.MapFrom(src => src.Iaid))
-                .ForMember(dest => dest.RID, opt => opt.MapFrom(src => src.ReplicaId))
-                .ForMember(dest => dest.Ref, opt => opt.MapFrom(src => src.CitableReference))
-                .ForMember(dest => dest.PIAID, opt => opt.MapFrom(src => src.ParentId))
-                .ForMember(dest => dest.AccDates, opt => opt.MapFrom(src => src.AccumulationDates))
-                .ForMember(dest => dest.Accrls, opt => opt.MapFrom(src => src.Accruals))
-                .ForMember(dest => dest.AcsConds, opt => opt.MapFrom(src => src.AccessConditions))
-                .ForMember(dest => dest.AdmBgr, opt => opt.MapFrom(src => src.AdministrativeBackground))
-                .ForMember(dest => dest.ApprInfo, opt => opt.MapFrom(src => src.AppraisalInformation))
-                .ForMember(dest => dest.Arrmnt, opt => opt.MapFrom(src => src.Arrangement))
-                .ForMember(dest => dest.BatchId, opt => opt.MapFrom(src => src.BatchId))
-                .ForMember(dest => dest.BRefIAID, opt => opt.MapFrom(src => src.RefIaid))
-                .ForMember(dest => dest.CatId, opt => opt.MapFrom(src => src.CatalogueId))
-                .ForMember(dest => dest.EDocId, opt => opt.MapFrom(src => src.EDocumentId))
-                .ForMember(dest => dest.ChgType, opt => opt.MapFrom(src => src.ChargeType))
-                .ForMember(dest => dest.CFrmDt, opt => opt.MapFrom(src => src.CoveringFromDate))
-                .ForMember(dest => dest.CorpNs, opt => opt.MapFrom(src => src.CorporateNames))
-                .ForMember(dest => dest.CovDts, opt => opt.MapFrom(src => src.CoveringDates))
-                .ForMember(dest => dest.CpsInfo, opt => opt.MapFrom(src => src.CopiesInformation))
-                .ForMember(dest => dest.CrtrNames, opt => opt.MapFrom(src => src.CreatorName))
-                .ForMember(dest => dest.CToDt, opt => opt.MapFrom(src => src.CoveringToDate))
-                .ForMember(dest => dest.CustHist, opt => opt.MapFrom(src => src.CustodialHistory))
-                .ForMember(dest => dest.Clsr, opt => opt.MapFrom(src => new Clsr() { CT = src.ClosureType, CC = src.ClosureCode, CS = src.ClosureStatus, RecOpenD = src.RecordOpeningDate }))
-                .ForMember(dest => dest.Dgtsd, opt => opt.MapFrom(src => src.Digitised))
-                .ForMember(dest => dest.Dim, opt => opt.MapFrom(src => src.Dimensions))
-                .ForMember(dest => dest.FRefDep, opt => opt.MapFrom(src => src.FormerReferenceDep))
-                .ForMember(dest => dest.FRefPro, opt => opt.MapFrom(src => src.FormerReferencePro))
-                .ForMember(dest => dest.HeldBys, opt => opt.MapFrom(src => src.HeldBy))
-                .ForMember(dest => dest.ImmSrcOfAcs, opt => opt.MapFrom(src => src.ImmediateSourceOfAcquisition))
-                .ForMember(dest => dest.Lang, opt => opt.MapFrom(src => src.Language))
-                .ForMember(dest => dest.LglStts, opt => opt.MapFrom(src => src.LegalStatus))
-                .ForMember(dest => dest.Links, opt => opt.MapFrom(src => src.Links))
-                .ForMember(dest => dest.LocOfOrigs, opt => opt.MapFrom(src => src.LocationOfOriginals))
-                .ForMember(dest => dest.LvlId, opt => opt.MapFrom(src => src.CatalogueLevel))
-                .ForMember(dest => dest.MapDes, opt => opt.MapFrom(src => src.MapDesignation))
-                .ForMember(dest => dest.MapScNum, opt => opt.MapFrom(src => src.MapScaleNumber))
-                .ForMember(dest => dest.Note, opt => opt.MapFrom(src => src.Note))
-                .ForMember(dest => dest.People, opt => opt.MapFrom(src => src.People))
-                .ForMember(dest => dest.PhysCond, opt => opt.MapFrom(src => src.PhysicalCondition))
-                .ForMember(dest => dest.PhysDescExtnt, opt => opt.MapFrom(src => src.PhysicalDescriptionExtent))
-                .ForMember(dest => dest.PhysDescFrm, opt => opt.MapFrom(src => src.PhysicalDescriptionForm))
-                .ForMember(dest => dest.Places, opt => opt.MapFrom(src => src.Places))
-                .ForMember(dest => dest.PRef, opt => opt.MapFrom(src => src.ReferencePart))
-                .ForMember(dest => dest.PublNotes, opt => opt.MapFrom(src => src.PublicationNote))
-                .ForMember(dest => dest.RRec, opt => opt.MapFrom(src => src.RegistryRecords))
-                .ForMember(dest => dest.RelMats, opt => opt.MapFrom(src => src.RelatedMaterial))
-                .ForMember(dest => dest.SepMats, opt => opt.MapFrom(src => src.SeparatedMaterial))
-                .ForMember(dest => dest.RstrOnUse, opt => opt.MapFrom(src => src.RestrictionsOnUse))
-                .ForMember(dest => dest.SC, opt => opt.MapFrom(src => src.ScopeContent))
-                .ForMember(dest => dest.Src, opt => opt.MapFrom(src => src.Source))
-                .ForMember(dest => dest.SrtKey, opt => opt.MapFrom(src => src.SortKey))
-                .ForMember(dest => dest.Subjects, opt => opt.MapFrom(src => src.Subjects))
-                .ForMember(dest => dest.Ttl, opt => opt.MapFrom(src => src.Title))
-                .ForMember(dest => dest.UnpFindAids, opt => opt.MapFrom(src => src.UnpublishedFindingAids))
-                .ReverseMap()
-                .ForMember(dest => dest.ClosureType, opt => opt.MapFrom(src => src.Clsr.CT))
-                .ForMember(dest => dest.ClosureCode, opt => opt.MapFrom(src => src.Clsr.CC))
-                .ForMember(dest => dest.ClosureStatus, opt => opt.MapFrom(src => src.Clsr.CS))
-                .ForMember(dest => dest.RecordOpeningDate, opt => opt.MapFrom(src => src.Clsr.RecOpenD));
+        public static EntityReferenceModel ToEntityReferenceModel(this EntRef src)
+        {
+            if (src == null) return null;
 
-            //File Authority
-            CreateMap<CategoryModel, Category>()
-                .ForMember(dest => dest.CatID, opt => opt.MapFrom(src => src.CatagoryId))
-                .ForMember(dest => dest.CatDesc, opt => opt.MapFrom(src => src.CatagoryDescription))
-                .ForMember(dest => dest.SubCatID, opt => opt.MapFrom(src => src.SubCatagoryId))
-                .ForMember(dest => dest.SubCatDesc, opt => opt.MapFrom(src => src.SubCatagoryDescription))
-                .ReverseMap();
+            return new EntityReferenceModel
+            {
+                XReferenceId = src.XRefId,
+                XReferenceCode = src.XRefC,
+                XReferenceName = src.XRefN,
+                XReferenceType = src.XRefT,
+                XReferenceURL = src.XRefURL,
+                XReferenceDescription = src.XRefD,
+                XReferenceSortWord = src.XRefSrt,
+                Description = src.Desc,
+                PreTitle = src.PreTtl,
+                Title = src.PTtl,
+                FirstName = src.FN,
+                Surname = src.SN,
+                StartDate = src.SDate,
+                EndDate = src.EDate
+            };
+        }
 
-            CreateMap<CollectionModel, Collection>()
-                .ForMember(dest => dest.RelToIA, opt => opt.MapFrom(src => src.RelatedToIa))
-                .ForMember(dest => dest.RepIA, opt => opt.MapFrom(src => src.RepositoryIaId))
-                .ReverseMap();
+        public static Prsn ToPrsn(this PersonModel src)
+        {
+            if (src == null) return null;
 
-            CreateMap<RelationshipModel, Rls>()
-                .ForMember(dest => dest.FAID, opt => opt.MapFrom(src => src.FaId))
-                .ForMember(dest => dest.AuthN, opt => opt.MapFrom(src => src.AuthorityName))
-                .ForMember(dest => dest.RlsCat, opt => opt.MapFrom(src => src.RelationshipCategory))
-                .ForMember(dest => dest.RlsDesc, opt => opt.MapFrom(src => src.RelationshipDescription))
-                .ForMember(dest => dest.RlsDates, opt => opt.MapFrom(src => src.RelationshipDates))
-                .ReverseMap();
+            return new Prsn
+            {
+                PreTtl = src.PreTitle,
+                PTtl = src.Title,
+                SrtTtl = src.SortTitle,
+                FN = src.Forenames,
+                SN = src.Surname,
+                SrtName = src.SortName,
+                Epithet = src.Epithet,
+                DoB = src.DateOfBirth,
+                DoD = src.DateOfDeath,
+                Occ = src.Occupation
+            };
+        }
 
-            CreateMap<ResourceModel, Res>()
-                .ForMember(dest => dest.ResTtl, opt => opt.MapFrom(src => src.ResourceTitle))
-                .ForMember(dest => dest.ResTyp, opt => opt.MapFrom(src => src.ResourceType))
-                .ForMember(dest => dest.ResLnk, opt => opt.MapFrom(src => src.ResourceLink))
-                .ReverseMap();
+        public static PersonModel ToPersonModel(this Prsn src)
+        {
+            if (src == null) return null;
 
-            CreateMap<FaInformationAssetModel, FileAuthorityIA>()
-                .ForMember(dest => dest.FAID, opt => opt.MapFrom(src => src.FaId))
-                .ForMember(dest => dest.FAType, opt => opt.MapFrom(src => src.FaType))
-                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender))
-                .ForMember(dest => dest.SubjType, opt => opt.MapFrom(src => src.SubjectType))
-                .ForMember(dest => dest.Places, opt => opt.MapFrom(src => src.Places))
-                .ForMember(dest => dest.Categories, opt => opt.MapFrom(src => src.Categories))
-                .ForMember(dest => dest.PreTtl, opt => opt.MapFrom(src => src.PreTitle))
-                .ForMember(dest => dest.Ttl, opt => opt.MapFrom(src => src.Title))
-                .ForMember(dest => dest.Fnames, opt => opt.MapFrom(src => src.Forenames))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
-                .ForMember(dest => dest.Eptht, opt => opt.MapFrom(src => src.Epithet))
-                .ForMember(dest => dest.SrtTtl, opt => opt.MapFrom(src => src.SortTitle))
-                .ForMember(dest => dest.SrtN, opt => opt.MapFrom(src => src.SortName))
-                .ForMember(dest => dest.AuthN, opt => opt.MapFrom(src => src.AuthorityName))
-                .ForMember(dest => dest.FrstDate, opt => opt.MapFrom(src => src.FirstDate))
-                .ForMember(dest => dest.LstDate, opt => opt.MapFrom(src => src.LastDate))
-                .ForMember(dest => dest.Dates, opt => opt.MapFrom(src => src.Dates))
-                .ForMember(dest => dest.IsAuthRec, opt => opt.MapFrom(src => src.IsAuthorityRecord))
-                .ForMember(dest => dest.Collections, opt => opt.MapFrom(src => src.Collections))
-                .ForMember(dest => dest.CorpNum, opt => opt.MapFrom(src => src.CorporateNumber))
-                .ForMember(dest => dest.SubjTtl, opt => opt.MapFrom(src => src.SubjectTitle))
-                .ForMember(dest => dest.ISAARRef, opt => opt.MapFrom(src => src.IsaarReferernce))
-                .ForMember(dest => dest.FISAARRef, opt => opt.MapFrom(src => src.FormerIsaarReference))
-                .ForMember(dest => dest.LglStts, opt => opt.MapFrom(src => src.LegalStatus))
-                .ForMember(dest => dest.SrsOfAuth, opt => opt.MapFrom(src => src.SourcesOfAuthority))
-                .ForMember(dest => dest.Hist, opt => opt.MapFrom(src => src.History))
-                .ForMember(dest => dest.Gnlgy, opt => opt.MapFrom(src => src.Genealogy))
-                .ForMember(dest => dest.HistCtxt, opt => opt.MapFrom(src => src.HistoricalContext))
-                .ForMember(dest => dest.Srcs, opt => opt.MapFrom(src => src.Sources))
-                .ForMember(dest => dest.FncsOccsOrActs, opt => opt.MapFrom(src => src.FunctionsOccupationsActivities))
-                .ForMember(dest => dest.NFrm, opt => opt.MapFrom(src => src.NameForm))
-                .ForMember(dest => dest.BiogHistLnks, opt => opt.MapFrom(src => src.BiographyHistoryLinks))
-                .ForMember(dest => dest.Rlss, opt => opt.MapFrom(src => src.Relationships))
-                .ForMember(dest => dest.RelRess, opt => opt.MapFrom(src => src.RelatedResources))
-                .ForMember(dest => dest.RemAndFunc, opt => opt.MapFrom(src => src.RemitAndFunction))
-                .ForMember(dest => dest.ValTxt, opt => opt.MapFrom(src => src.ValidationText))
-                .ForMember(dest => dest.VarTxt, opt => opt.MapFrom(src => src.VariationText))
-                .ForMember(dest => dest.JurisdTxt, opt => opt.MapFrom(src => src.JurisdictionText))
-                .ForMember(dest => dest.IsPlOfDep, opt => opt.MapFrom(src => src.IsPlaceOfDeposit))
-                .ForMember(dest => dest.NatPlOfDepCode, opt => opt.MapFrom(src => src.NationalPlaceOfDepositCode))
-                .ForMember(dest => dest.BiogHist, opt => opt.MapFrom(src => src.BiographyHistory))
-                .ForMember(dest => dest.BrwsC, opt => opt.MapFrom(src => src.BrowseCharacter))
-                .ForMember(dest => dest.IsPblc, opt => opt.MapFrom(src => src.IsPublic))
-                .ReverseMap();
+            return new PersonModel
+            {
+                PreTitle = src.PreTtl,
+                Title = src.PTtl,
+                SortTitle = src.SrtTtl,
+                Forenames = src.FN,
+                Surname = src.SN,
+                SortName = src.SrtName,
+                Epithet = src.Epithet,
+                DateOfBirth = src.DoB,
+                DateOfDeath = src.DoD,
+                Occupation = src.Occ
+            };
+        }
+
+        public static Place ToPlace(this PlaceModel src)
+        {
+            if (src == null) return null;
+
+            return new Place
+            {
+                Desc = src.Description,
+                DispName = src.DisplayName,
+                PlN = src.PlaceName,
+                Par = src.Parish,
+                TwnID = src.TownID,
+                Twn = src.Town,
+                Cnty = src.County,
+                CntyID = src.CountyID,
+                OldCnty = src.OldCounty,
+                OldCntyID = src.OldCountyID,
+                NewCnty = src.NewCounty,
+                NewCntyID = src.NewCountyID,
+                CtryID = src.CountryID,
+                Ctry = src.Country,
+                Reg = src.Region,
+                RegID = src.RegionID,
+                StDt = src.StartDate,
+                EndDt = src.EndDate,
+                Grid = src.Grid,
+                Val = src.Validation,
+                LocType = src.LocationType
+            };
+        }
+
+        public static PlaceModel ToPlaceModel(this Place src)
+        {
+            if (src == null) return null;
+
+            return new PlaceModel
+            {
+                Description = src.Desc,
+                DisplayName = src.DispName,
+                PlaceName = src.PlN,
+                Parish = src.Par,
+                TownID = src.TwnID,
+                Town = src.Twn,
+                County = src.Cnty,
+                CountyID = src.CntyID,
+                OldCounty = src.OldCnty,
+                OldCountyID = src.OldCntyID,
+                NewCounty = src.NewCnty,
+                NewCountyID = src.NewCntyID,
+                CountryID = src.CtryID,
+                Country = src.Ctry,
+                Region = src.Reg,
+                RegionID = src.RegID,
+                StartDate = src.StDt,
+                EndDate = src.EndDt,
+                Grid = src.Grid,
+                Validation = src.Val,
+                LocationType = src.LocType
+            };
+        }
+
+        public static SCont ToSCont(this ScopeContentModel src)
+        {
+            if (src == null) return null;
+
+            return new SCont
+            {
+                Pple = src.PersonNames?.Select(x => x.ToEntRef()).ToList(),
+                Plcs = src.PlaceNames?.Select(x => x.ToEntRef()).ToList(),
+                RefdToDate = src.RefferedToDate,
+                Orgs = src.Organizations?.Select(x => x.ToEntRef()).ToList(),
+                Desc = src.Description,
+                Eph = src.Ephemera,
+                Schema = src.Schema
+            };
+        }
+
+        public static ScopeContentModel ToScopeContentModel(this SCont src)
+        {
+            if (src == null) return null;
+
+            return new ScopeContentModel
+            {
+                PersonNames = src.Pple?.Select(x => x.ToEntityReferenceModel()).ToList(),
+                PlaceNames = src.Plcs?.Select(x => x.ToEntityReferenceModel()).ToList(),
+                RefferedToDate = src.RefdToDate,
+                Organizations = src.Orgs?.Select(x => x.ToEntityReferenceModel()).ToList(),
+                Description = src.Desc,
+                Ephemera = src.Eph,
+                Schema = src.Schema
+            };
+        }
+
+        public static RegRecs ToRegRecs(this RegistryRecordsModel src)
+        {
+            if (src == null) return null;
+
+            return new RegRecs
+            {
+                NRAID = src.NRAID,
+                RRTtl = src.RegistryRecordTitle,
+                ROColRef = src.ROCollectionReference,
+                ROAccNo = src.ROAccessionNumber,
+                NRAD = src.NRADetails,
+                OthRef = src.OtherReference,
+                ISADGRef = src.ISADGReference,
+                SrtW = src.SortWord,
+                CURL = src.CatalogueURL,
+                SLists = src.ScannedLists?.Select(x => x.ToXRef()).ToList()
+            };
+        }
+
+        public static RegistryRecordsModel ToRegistryRecordsModel(this RegRecs src)
+        {
+            if (src == null) return null;
+
+            return new RegistryRecordsModel
+            {
+                NRAID = src.NRAID,
+                RegistryRecordTitle = src.RRTtl,
+                ROCollectionReference = src.ROColRef,
+                ROAccessionNumber = src.ROAccNo,
+                NRADetails = src.NRAD,
+                OtherReference = src.OthRef,
+                ISADGReference = src.ISADGRef,
+                SortWord = src.SrtW,
+                CatalogueURL = src.CURL,
+                ScannedLists = src.SLists?.Select(x => x.ToXReferenceModel()).ToList()
+            };
+        }
+
+        public static IA ToIA(this InformationAssetModel src)
+        {
+            if (src == null) return null;
+
+            return new IA
+            {
+                IAID = src.Iaid,
+                RID = src.ReplicaId,
+                Ref = src.CitableReference,
+                PIAID = src.ParentId,
+                AccDates = src.AccumulationDates,
+                Accrls = src.Accruals,
+                AcsConds = src.AccessConditions,
+                AdmBgr = src.AdministrativeBackground,
+                ApprInfo = src.AppraisalInformation,
+                Arrmnt = src.Arrangement,
+                BatchId = src.BatchId,
+                BRefIAID = src.RefIaid,
+                CatId = src.CatalogueId,
+                EDocId = src.EDocumentId,
+                ChgType = src.ChargeType,
+                CFrmDt = src.CoveringFromDate,
+                CorpNs = src.CorporateNames?.Select(x => x.ToEntRef()).ToList(),
+                CovDts = src.CoveringDates,
+                CpsInfo = src.CopiesInformation?.Select(x => x.ToEntRef()).ToList(),
+                CrtrNames = src.CreatorName?.Select(x => x.ToEntRef()).ToList(),
+                CToDt = src.CoveringToDate,
+                CustHist = src.CustodialHistory,
+                Clsr = new Clsr
+                {
+                    CT = src.ClosureType,
+                    CC = src.ClosureCode,
+                    CS = src.ClosureStatus,
+                    RecOpenD = src.RecordOpeningDate
+                },
+                Dgtsd = src.Digitised,
+                Dim = src.Dimensions,
+                FRefDep = src.FormerReferenceDep,
+                FRefPro = src.FormerReferencePro,
+                HeldBys = src.HeldBy?.Select(x => x.ToEntRef()).ToList(),
+                ImmSrcOfAcs = src.ImmediateSourceOfAcquisition?.Select(x => x.ToEntRef()).ToList(),
+                Lang = src.Language,
+                LglStts = src.LegalStatus,
+                Links = src.Links?.Select(x => x.ToEntRef()).ToList(),
+                LocOfOrigs = src.LocationOfOriginals?.Select(x => x.ToEntRef()).ToList(),
+                LvlId = src.CatalogueLevel,
+                MapDes = src.MapDesignation,
+                MapScNum = src.MapScaleNumber,
+                Note = src.Note,
+                People = src.People?.Select(x => x.ToPrsn()).ToList(),
+                PhysCond = src.PhysicalCondition,
+                PhysDescExtnt = src.PhysicalDescriptionExtent,
+                PhysDescFrm = src.PhysicalDescriptionForm,
+                Places = src.Places?.Select(x => x.ToPlace()).ToList(),
+                PRef = src.ReferencePart,
+                PublNotes = src.PublicationNote,
+                RelMats = src.RelatedMaterial?.Select(x => x.ToEntRef()).ToList(),
+                RRec = src.RegistryRecords?.Select(x => x.ToRegRecs()).ToList(),
+                RstrOnUse = src.RestrictionsOnUse,
+                SC = src.ScopeContent?.ToSCont(),
+                SepMats = src.SeparatedMaterial?.Select(x => x.ToEntRef()).ToList(),
+                Src = src.Source,
+                SrtKey = src.SortKey,
+                Subjects = src.Subjects,
+                Ttl = src.Title,
+                UnpFindAids = src.UnpublishedFindingAids
+            };
+        }
+
+        public static InformationAssetModel ToInformationAssetModel(this IA src)
+        {
+            if (src == null) return null;
+
+            return new InformationAssetModel
+            {
+                Iaid = src.IAID,
+                ReplicaId = src.RID,
+                CitableReference = src.Ref,
+                ParentId = src.PIAID,
+                AccumulationDates = src.AccDates,
+                Accruals = src.Accrls,
+                AccessConditions = src.AcsConds,
+                AdministrativeBackground = src.AdmBgr,
+                AppraisalInformation = src.ApprInfo,
+                Arrangement = src.Arrmnt,
+                BatchId = src.BatchId,
+                RefIaid = src.BRefIAID,
+                CatalogueId = src.CatId,
+                EDocumentId = src.EDocId,
+                ChargeType = src.ChgType,
+                CoveringFromDate = src.CFrmDt,
+                CorporateNames = src.CorpNs?.Select(x => x.ToEntityReferenceModel()).ToList(),
+                CoveringDates = src.CovDts,
+                CopiesInformation = src.CpsInfo?.Select(x => x.ToEntityReferenceModel()).ToList(),
+                CreatorName = src.CrtrNames?.Select(x => x.ToEntityReferenceModel()).ToList(),
+                CoveringToDate = src.CToDt,
+                CustodialHistory = src.CustHist,
+                ClosureType = src.Clsr?.CT,
+                ClosureCode = src.Clsr?.CC,
+                ClosureStatus = src.Clsr?.CS,
+                RecordOpeningDate = src.Clsr?.RecOpenD,
+                Digitised = src.Dgtsd,
+                Dimensions = src.Dim,
+                FormerReferenceDep = src.FRefDep,
+                FormerReferencePro = src.FRefPro,
+                HeldBy = src.HeldBys?.Select(x => x.ToEntityReferenceModel()).ToList(),
+                ImmediateSourceOfAcquisition = src.ImmSrcOfAcs?.Select(x => x.ToEntityReferenceModel()).ToList(),
+                Language = src.Lang,
+                LegalStatus = src.LglStts,
+                Links = src.Links?.Select(x => x.ToEntityReferenceModel()).ToList(),
+                LocationOfOriginals = src.LocOfOrigs?.Select(x => x.ToEntityReferenceModel()).ToList(),
+                CatalogueLevel = src.LvlId,
+                MapDesignation = src.MapDes,
+                MapScaleNumber = src.MapScNum,
+                Note = src.Note,
+                People = src.People?.Select(x => x.ToPersonModel()).ToList(),
+                PhysicalCondition = src.PhysCond,
+                PhysicalDescriptionExtent = src.PhysDescExtnt,
+                PhysicalDescriptionForm = src.PhysDescFrm,
+                Places = src.Places?.Select(x => x.ToPlaceModel()).ToList(),
+                ReferencePart = src.PRef,
+                PublicationNote = src.PublNotes,
+                RelatedMaterial = src.RelMats?.Select(x => x.ToEntityReferenceModel()).ToList(),
+                RegistryRecords = src.RRec?.Select(x => x.ToRegistryRecordsModel()).ToList(),
+                RestrictionsOnUse = src.RstrOnUse,
+                ScopeContent = src.SC?.ToScopeContentModel(),
+                SeparatedMaterial = src.SepMats?.Select(x => x.ToEntityReferenceModel()).ToList(),
+                Source = src.Src,
+                SortKey = src.SrtKey,
+                Subjects = src.Subjects,
+                Title = src.Ttl,
+                UnpublishedFindingAids = src.UnpFindAids
+            };
+        }
+
+        public static Category ToCategory(this CategoryModel src)
+        {
+            if (src == null) return null;
+
+            return new Category
+            {
+                CatID = src.CatagoryId,
+                CatDesc = src.CatagoryDescription,
+                SubCatID = src.SubCatagoryId,
+                SubCatDesc = src.SubCatagoryDescription
+            };
+        }
+
+        public static CategoryModel ToCategoryModel(this Category src)
+        {
+            if (src == null) return null;
+
+            return new CategoryModel
+            {
+                CatagoryId = src.CatID,
+                CatagoryDescription = src.CatDesc,
+                SubCatagoryId = src.SubCatID,
+                SubCatagoryDescription = src.SubCatDesc
+            };
+        }
+
+        public static Collection ToCollection(this CollectionModel src)
+        {
+            if (src == null) return null;
+
+            return new Collection
+            {
+                RelToIA = src.RelatedToIa,
+                RepIA = src.RepositoryIaId
+            };
+        }
+
+        public static CollectionModel ToCollectionModel(this Collection src)
+        {
+            if (src == null) return null;
+
+            return new CollectionModel
+            {
+                RelatedToIa = src.RelToIA,
+                RepositoryIaId = src.RepIA
+            };
+        }
+
+        public static Res ToRes(this ResourceModel src)
+        {
+            if (src == null) return null;
+
+            return new Res
+            {
+                ResTtl = src.ResourceTitle,
+                ResTyp = src.ResourceType,
+                ResLnk = src.ResourceLink
+            };
+        }
+
+        public static ResourceModel ToResourceModel(this Res src)
+        {
+            if (src == null) return null;
+
+            return new ResourceModel
+            {
+                ResourceTitle = src.ResTtl,
+                ResourceType = src.ResTyp,
+                ResourceLink = src.ResLnk
+            };
+        }
+
+        public static Rls ToRls(this RelationshipModel src)
+        {
+            if (src == null) return null;
+
+            return new Rls
+            {
+                FAID = src.FaId,
+                AuthN = src.AuthorityName,
+                RlsCat = src.RelationshipCategory,
+                RlsDesc = src.RelationshipDescription,
+                RlsDates = src.RelationshipDates
+            };
+        }
+
+        public static RelationshipModel ToRelationshipModel(this Rls src)
+        {
+            if (src == null) return null;
+
+            return new RelationshipModel
+            {
+                FaId = src.FAID,
+                AuthorityName = src.AuthN,
+                RelationshipCategory = src.RlsCat,
+                RelationshipDescription = src.RlsDesc,
+                RelationshipDates = src.RlsDates
+            };
+        }
+
+        public static FileAuthorityIA ToFileAuthorityIA(this FaInformationAssetModel src)
+        {
+            if (src == null) return null;
+
+            return new FileAuthorityIA
+            {
+                FAID = src.FaId,
+                FAType = src.FaType,
+                Gender = src.Gender,
+                SubjType = src.SubjectType,
+                Places = src.Places?.Select(x => x.ToPlace()).ToList(),
+                Categories = src.Categories?.Select(x => x.ToCategory()).ToList(),
+                PreTtl = src.PreTitle,
+                Ttl = src.Title,
+                Fnames = src.Forenames,
+                Name = src.Name,
+                Eptht = src.Epithet,
+                SrtTtl = src.SortTitle,
+                SrtN = src.SortName,
+                AuthN = src.AuthorityName,
+                FrstDate = src.FirstDate,
+                LstDate = src.LastDate,
+                Dates = src.Dates,
+                IsAuthRec = src.IsAuthorityRecord,
+                Collections = src.Collections?.Select(x => x.ToCollection()).ToList(),
+                CorpNum = src.CorporateNumber,
+                SubjTtl = src.SubjectTitle,
+                ISAARRef = src.IsaarReferernce,
+                FISAARRef = src.FormerIsaarReference,
+                LglStts = src.LegalStatus,
+                SrsOfAuth = src.SourcesOfAuthority,
+                Hist = src.History,
+                Gnlgy = src.Genealogy,
+                HistCtxt = src.HistoricalContext,
+                Srcs = src.Sources,
+                FncsOccsOrActs = src.FunctionsOccupationsActivities,
+                NFrm = src.NameForm,
+                BiogHistLnks = src.BiographyHistoryLinks?.Select(x => x.ToRes()).ToList(),
+                Rlss = src.Relationships?.Select(x => x.ToRls()).ToList(),
+                RelRess = src.RelatedResources?.Select(x => x.ToRes()).ToList(),
+                RemAndFunc = src.RemitAndFunction,
+                ValTxt = src.ValidationText,
+                VarTxt = src.VariationText,
+                JurisdTxt = src.JurisdictionText,
+                IsPlOfDep = src.IsPlaceOfDeposit,
+                NatPlOfDepCode = src.NationalPlaceOfDepositCode,
+                BiogHist = src.BiographyHistory,
+                BrwsC = src.BrowseCharacter,
+                IsPblc = src.IsPublic
+            };
+        }
+
+        public static FaInformationAssetModel ToFaInformationAssetModel(this FileAuthorityIA src)
+        {
+            if (src == null) return null;
+
+            return new FaInformationAssetModel
+            {
+                FaId = src.FAID,
+                FaType = src.FAType,
+                Gender = src.Gender,
+                SubjectType = src.SubjType,
+                Places = src.Places?.Select(x => x.ToPlaceModel()).ToList(),
+                Categories = src.Categories?.Select(x => x.ToCategoryModel()).ToList(),
+                PreTitle = src.PreTtl,
+                Title = src.Ttl,
+                Forenames = src.Fnames,
+                Name = src.Name,
+                Epithet = src.Eptht,
+                SortTitle = src.SrtTtl,
+                SortName = src.SrtN,
+                AuthorityName = src.AuthN,
+                FirstDate = src.FrstDate,
+                LastDate = src.LstDate,
+                Dates = src.Dates,
+                IsAuthorityRecord = src.IsAuthRec,
+                Collections = src.Collections?.Select(x => x.ToCollectionModel()).ToList(),
+                CorporateNumber = src.CorpNum,
+                SubjectTitle = src.SubjTtl,
+                IsaarReferernce = src.ISAARRef,
+                FormerIsaarReference = src.FISAARRef,
+                LegalStatus = src.LglStts,
+                SourcesOfAuthority = src.SrsOfAuth,
+                History = src.Hist,
+                Genealogy = src.Gnlgy,
+                HistoricalContext = src.HistCtxt,
+                Sources = src.Srcs,
+                FunctionsOccupationsActivities = src.FncsOccsOrActs,
+                NameForm = src.NFrm,
+                BiographyHistoryLinks = src.BiogHistLnks?.Select(x => x.ToResourceModel()).ToList(),
+                Relationships = src.Rlss?.Select(x => x.ToRelationshipModel()).ToList(),
+                RelatedResources = src.RelRess?.Select(x => x.ToResourceModel()).ToList(),
+                RemitAndFunction = src.RemAndFunc,
+                ValidationText = src.ValTxt,
+                VariationText = src.VarTxt,
+                JurisdictionText = src.JurisdTxt,
+                IsPlaceOfDeposit = src.IsPlOfDep,
+                NationalPlaceOfDepositCode = src.NatPlOfDepCode,
+                BiographyHistory = src.BiogHist,
+                BrowseCharacter = src.BrwsC,
+                IsPublic = src.IsPblc
+            };
         }
     }
 }

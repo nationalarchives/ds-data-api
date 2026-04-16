@@ -1,4 +1,4 @@
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using NLog;
 using NLog.Web;
 using Repositories.SarInfo;
@@ -27,8 +27,6 @@ try
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Sar data api", Version = "v1" }); });
-
-    builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
     // Add NLoging to the container.
     builder.Logging.ClearProviders();

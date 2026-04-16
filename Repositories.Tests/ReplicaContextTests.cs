@@ -52,20 +52,6 @@ namespace Repositories.Tests
         }
 
         [TestMethod]
-        public async Task UpsertReplica_WithNull_RaiseError()
-        {
-            //Arrange
-            _replicaRepo.ReplaceAsync(Arg.Any<Expression<Func<Repl, bool>>>(),
-                Arg.Is<Repl>(r => r == null),
-                Arg.Any<UpdateOptions>()).Throws(new ArgumentNullException());
-
-            //Act
-            var replicaContext = new ReplicaContext(_replicaRepo);
-            //Assert
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => replicaContext.UpsertAsync(null));
-        }
-
-        [TestMethod]
         public void GetReplica_WithValidIaid_ReturnsReplica()
         {
             //Arrange

@@ -1,4 +1,4 @@
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using NLog.Web;
 using NLog;
 using Repositories.FAInformationAsset;
@@ -25,8 +25,6 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "IA data api", Version = "v1" }); });
     builder.Services.AddHealthChecks();
-
-    builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
     builder.Services.AddTransient<IRepository<IA>, Repository<IA>>();
     builder.Services.AddTransient<IRepository<FileAuthorityIA>, Repository<FileAuthorityIA>>();

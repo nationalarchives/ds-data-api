@@ -1,37 +1,44 @@
-﻿using AutoMapper;
-using sar_data_api.Models;
+﻿using sar_data_api.Models;
 using TNA.DataDefinitionObjects;
 
 namespace sar_data_api;
 
-public class Mapping : Profile
+public static class Mapping
 {
-    public Mapping()
+    public static Sar ToSar(this SarInfoModel src)
     {
-        CreateMap<ClosureCriterionModel, ClosureCriterion>()
-             .ForMember(dest => dest.ExemptionCodeId, opt => opt.MapFrom(src => src.ExemptionCodeId)).ReverseMap();
+        if (src == null) return null;
 
-        CreateMap<SarInfoModel, Sar>()
-             .ForMember(dest => dest.RelatedToIA, opt => opt.MapFrom(src => src.Iaid))
-             .ForMember(dest => dest.SignedDate, opt => opt.MapFrom(src => src.SignedDate))
-             .ForMember(dest => dest.ReviewDate, opt => opt.MapFrom(src => src.ReviewDate))
-             .ForMember(dest => dest.ReconsiderDueInDate, opt => opt.MapFrom(src => src.ReconsiderDueInDate))
-             .ForMember(dest => dest.Explanation, opt => opt.MapFrom(src => src.Explanation))
-             .ForMember(dest => dest.ProcatTitle, opt => opt.MapFrom(src => src.ProcatTitle)).ReverseMap();
+        return new Sar
+        {
+            RelatedToIA = src.Iaid,
+            SignedDate = src.SignedDate,
+            ReviewDate = src.ReviewDate,
+            ReconsiderDueInDate = src.ReconsiderDueInDate,
+            Explanation = src.Explanation,
+            ProcatTitle = src.ProcatTitle,
+            ClosureCriterions = src.ClosureCriterions.Select(x => new ClosureCriterion { ExemptionCodeId = x.ExemptionCodeId }).ToList()
+        };
+    }
 
-        CreateMap<ClosureCriterionDisplayModel, ClosureCriterion>()
-             .ForMember(dest => dest.ExemptionCodeId, opt => opt.MapFrom(src => src.ExemptionCodeId)).ReverseMap();
+    public static SarInfoDisplayModel ToSarInfoDisplayModel(this Sar src, List<ClosureCriterions> closureCriterions)
+    {
+        if (src == null) return null;
 
-        CreateMap<SarInfoDisplayModel, Sar>()
-             .ForMember(dest => dest.RelatedToIA, opt => opt.MapFrom(src => src.Iaid))
-             .ForMember(dest => dest.SignedDate, opt => opt.MapFrom(src => src.SignedDate))
-             .ForMember(dest => dest.ReviewDate, opt => opt.MapFrom(src => src.ReviewDate))
-             .ForMember(dest => dest.ReconsiderDueInDate, opt => opt.MapFrom(src => src.ReconsiderDueInDate))
-             .ForMember(dest => dest.Explanation, opt => opt.MapFrom(src => src.Explanation))
-             .ForMember(dest => dest.ProcatTitle, opt => opt.MapFrom(src => src.ProcatTitle)).ReverseMap();
-
-        CreateMap<ClosureCriterionDisplayModel, ClosureCriterions>()
-             .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.ExemptionCodeId))
-             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.ExemptionCodeDescription)).ReverseMap();
+        var model = new SarInfoDisplayModel
+        {
+            Iaid = src.RelatedToIA,
+            SignedDate = src.SignedDate,
+            ReviewDate = src.ReviewDate,
+            ReconsiderDueInDate = src.ReconsiderDueInDate,
+            Explanation = src.Explanation,
+            ProcatTitle = src.ProcatTitle,
+            ClosureCriterions = src.ClosureCriterions.Select(x => new ClosureCriterionDisplayModel { ExemptionCodeId = x.ExemptionCodeId }).ToList()
+        };
+        foreach (var item in model.ClosureCriterions)
+        {
+            item.ExemptionCodeDescription = closureCriterions?.FirstOrDefault(y => y.Code == item.ExemptionCodeId)?.Description;
+        }
+        return model;
     }
 }

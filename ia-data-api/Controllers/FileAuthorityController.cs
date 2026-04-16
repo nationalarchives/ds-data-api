@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using ia_data_api.Models;
+﻿using ia_data_api.Models;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryContracts.FAInformationAsset;
-using TNA.DataDefinitionObjects;
 
 namespace ia_data_api.Controllers;
 
@@ -11,13 +9,11 @@ namespace ia_data_api.Controllers;
 public class FileAuthorityController : Controller
 {
     private readonly IFaInformationAssetContext _dataContext;
-    private readonly IMapper _mapper;
     private ILogger<FileAuthorityController> _logger;
 
-    public FileAuthorityController(IFaInformationAssetContext dataContext, IMapper mapper, ILogger<FileAuthorityController> logger)
+    public FileAuthorityController(IFaInformationAssetContext dataContext, ILogger<FileAuthorityController> logger)
     {
         _dataContext = dataContext;
-        _mapper = mapper;
         _logger = logger;
     }
 
@@ -29,7 +25,7 @@ public class FileAuthorityController : Controller
         if (string.IsNullOrEmpty(faid)) return BadRequest("Faid is required.");
         var fileAuthority = await _dataContext.GetAsync(faid);
         if (fileAuthority == null) return NotFound();
-        return Ok(_mapper.Map<FaInformationAssetModel>(fileAuthority));
+        return Ok(fileAuthority.ToFaInformationAssetModel());
     }
 
     [HttpPost]
@@ -38,7 +34,7 @@ public class FileAuthorityController : Controller
     {
         if (model == null) return BadRequest("FAInformationAsset object is NULL.");
         if (string.IsNullOrEmpty(model.FaId)) return BadRequest("Faid is required.");
-        var fileAuthority = _mapper.Map<FileAuthorityIA>(model);
+        var fileAuthority = model.ToFileAuthorityIA();
         await _dataContext.UpsertAsync(fileAuthority);
         return CreatedAtRoute("getasset", new { faid = model.FaId }, model);
     }
