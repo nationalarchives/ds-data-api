@@ -189,7 +189,7 @@ namespace ia_data_api
             {
                 Pple = src.PersonNames?.Select(x => x.ToEntRef()).ToList(),
                 Plcs = src.PlaceNames?.Select(x => x.ToEntRef()).ToList(),
-                RefdToDate = src.RefferedToDate,
+                RefdToDate = src.ReferredToDate,
                 Orgs = src.Organizations?.Select(x => x.ToEntRef()).ToList(),
                 Desc = src.Description,
                 Eph = src.Ephemera,
@@ -205,7 +205,7 @@ namespace ia_data_api
             {
                 PersonNames = src.Pple?.Select(x => x.ToEntityReferenceModel()).ToList(),
                 PlaceNames = src.Plcs?.Select(x => x.ToEntityReferenceModel()).ToList(),
-                RefferedToDate = src.RefdToDate,
+                ReferredToDate = src.RefdToDate,
                 Organizations = src.Orgs?.Select(x => x.ToEntityReferenceModel()).ToList(),
                 Description = src.Desc,
                 Ephemera = src.Eph,
