@@ -40,7 +40,7 @@ namespace sar_data_api.Controllers
             if (string.IsNullOrEmpty(model.Iaid)) return BadRequest("Iaid is required.");
             var record = model.ToSar();
             await _dataContext.UpsertAsync(record);
-            return CreatedAtRoute("getsar", new { iaid = model.Iaid });
+            return CreatedAtRoute("getsar", new { iaid = model.Iaid }, model);
         }
 
         [HttpDelete("{iaid}")]
